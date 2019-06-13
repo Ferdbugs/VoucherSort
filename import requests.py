@@ -6,17 +6,19 @@ import time
 import random
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import csv
 
 
 UnfID = []
 
 def login(UnfID):
     Msg = "Approved"
+    Msg2 = "Mammogram"
     ID = ''.join(e for e in UnfID if e.isalnum())
     driver = webdriver.Chrome()
     driver.get ("https://sehat.perkeso.gov.my/v2/")
-    driver.find_element_by_id("modlgn-username").send_keys("DCSEREMBAN1")
-    driver.find_element_by_id ("modlgn-passwd").send_keys("BPSEREMBAN2019")
+    driver.find_element_by_id("modlgn-username").send_keys("DCIPOH")
+    driver.find_element_by_id ("modlgn-passwd").send_keys("BPDCIPOH")
     driver.find_element_by_name("Submit").click()
     driver.find_element_by_class_name("item-711").click()
     driver.find_element_by_xpath("//*[@id='content']/div[2]/div[2]/table/tbody/tr[2]/td[5]/a").click()
@@ -27,13 +29,33 @@ def login(UnfID):
     status = soup.find("div",id="cbUserTable")
     div = soup.prettify("utf-8")
     if Msg in str(div):
-        f= open("Parkeso.txt","a")
-        f.write(ID + "   " + Msg + "\n")
-        f.close
+        with open(r'Status.csv', 'a') as f:
+            writer = csv.writer(f,lineterminator = '\n')
+            row =[ID,Msg]
+            writer.writerow(row)
+            f.close
     else:
-        f= open("Parkeso.txt","a")
-        f.write(ID + "   " + "Not Approved" + "\n")
-        f.close
+        with open(r'Status.csv', 'a') as f:
+            writer = csv.writer(f,lineterminator = '\n')
+            row =[ID,"Not Approved"]
+            writer.writerow(row)
+            f.close
+    if Msg2 in str(div):
+        mamstatus=soup.find("mamdiv", xpath = "//*[@id='cbUserTable']/div[3]")
+        mamdiv = soup.prettify("utf-8")
+        if Msg in str(mamdiv):
+            with open(r'Status.csv', 'a') as f:
+                writer = csv.writer(f,lineterminator = '\n')
+                row =[ID,"Mammogram Approved"]
+                writer.writerow(row)
+                f.close
+        else:
+            with open(r'Status.csv', 'a') as f:
+                writer = csv.writer(f,lineterminator = '\n')
+                row =[ID,"Mammogram Not Approved"]
+                writer.writerow(row)
+                f.close
+        
     driver.close()
     driver.quit()
 
