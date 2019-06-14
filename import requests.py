@@ -14,6 +14,8 @@ UnfID = []
 def login(UnfID):
     Msg = "Approved"
     Msg2 = "Mammogram"
+    Msg3 = "You have yet to certify that the report is completed,"
+    Msg4 = "Processing"
     ID = ''.join(e for e in UnfID if e.isalnum())
     driver = webdriver.Chrome()
     driver.get ("https://sehat.perkeso.gov.my/v2/")
@@ -28,6 +30,7 @@ def login(UnfID):
     soup = BeautifulSoup(content, "html.parser")
     status = soup.find("div",id="cbUserTable")
     div = soup.prettify("utf-8")
+    print((str(div)).count(Msg2))
     if Msg in str(div):
         with open(r'Status.csv', 'a') as f:
             writer = csv.writer(f,lineterminator = '\n')
@@ -40,19 +43,17 @@ def login(UnfID):
             row =[ID,"Not Approved"]
             writer.writerow(row)
             f.close
-    if Msg2 in str(div):
-        mamstatus=soup.find("mamdiv", xpath = "//*[@id='cbUserTable']/div[3]")
-        mamdiv = soup.prettify("utf-8")
-        if Msg in str(mamdiv):
+    if (str(div)).count(Msg2)>1:
+        if Msg3 in str(div) or Msg4 in str(div):
             with open(r'Status.csv', 'a') as f:
                 writer = csv.writer(f,lineterminator = '\n')
-                row =[ID,"Mammogram Approved"]
+                row =[ID,"One Test Not Approved"]
                 writer.writerow(row)
                 f.close
         else:
             with open(r'Status.csv', 'a') as f:
                 writer = csv.writer(f,lineterminator = '\n')
-                row =[ID,"Mammogram Not Approved"]
+                row =[ID,"Both Tests Approved"]
                 writer.writerow(row)
                 f.close
         
