@@ -16,11 +16,12 @@ def login(UnfID):
     Msg2 = "Mammogram"
     Msg3 = "You have yet to certify that the report is completed,"
     Msg4 = "Processing"
+    Msg5 = "No users in this list"
     ID = ''.join(e for e in UnfID if e.isalnum())
     driver = webdriver.Chrome()
     driver.get ("https://sehat.perkeso.gov.my/v2/")
-    driver.find_element_by_id("modlgn-username").send_keys("DCIPOH")
-    driver.find_element_by_id ("modlgn-passwd").send_keys("BPDCIPOH")
+    driver.find_element_by_id("modlgn-username").send_keys("DCDU2")
+    driver.find_element_by_id ("modlgn-passwd").send_keys("BPDCDU2")
     driver.find_element_by_name("Submit").click()
     driver.find_element_by_class_name("item-711").click()
     driver.find_element_by_xpath("//*[@id='content']/div[2]/div[2]/table/tbody/tr[2]/td[5]/a").click()
@@ -34,7 +35,25 @@ def login(UnfID):
     if Msg in str(div):
         with open(r'Status.csv', 'a') as f:
             writer = csv.writer(f,lineterminator = '\n')
-            row =[ID,Msg]
+            row =[ID,Msg,"GREEN"]
+            writer.writerow(row)
+            f.close
+    elif Msg5 in str(div):
+        with open(r'Status.csv', 'a') as f:
+            writer = csv.writer(f,lineterminator = '\n')
+            row =[ID,Msg5]
+            writer.writerow(row)
+            f.close
+    elif Msg3 in str(div):
+        with open(r'Status.csv', 'a') as f:
+            writer = csv.writer(f,lineterminator = '\n')
+            row =[ID,Msg3,"BLUE"]
+            writer.writerow(row)
+            f.close
+    elif Msg4 in str(div):
+        with open(r'Status.csv', 'a') as f:
+            writer = csv.writer(f,lineterminator = '\n')
+            row =[ID,Msg4,"ORANGE"]
             writer.writerow(row)
             f.close
     else:
