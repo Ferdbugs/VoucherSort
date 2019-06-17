@@ -18,8 +18,8 @@ def login(IDlist):
     Msg5 = "No users in this list"
     driver = webdriver.Chrome()
     driver.get ("https://sehat.perkeso.gov.my/v2/")
-    driver.find_element_by_id("modlgn-username").send_keys("BPDCKLANG")
-    driver.find_element_by_id ("modlgn-passwd").send_keys("BPDCKLANG1")
+    driver.find_element_by_id("modlgn-username").send_keys("DCSJ")
+    driver.find_element_by_id ("modlgn-passwd").send_keys("BPDCSUBANGJAYA")
     driver.find_element_by_name("Submit").click()
     driver.find_element_by_class_name("item-711").click()
     driver.find_element_by_xpath("//*[@id='content']/div[2]/div[2]/table/tbody/tr[2]/td[5]/a").click()
@@ -32,51 +32,128 @@ def login(IDlist):
         status = soup.find("div",id="cbUserTable")
         div = soup.prettify("utf-8")
         print((str(div)).count(Msg2))
-        if Msg in str(div):
-            with open(r'Status.csv', 'a') as f:
-                writer = csv.writer(f,lineterminator = '\n')
-                row =[ID,Msg,"GREEN"]
-                writer.writerow(row)
-                f.close
-        elif Msg5 in str(div):
-            with open(r'Status.csv', 'a') as f:
-                writer = csv.writer(f,lineterminator = '\n')
-                row =[ID,Msg5]
-                writer.writerow(row)
-                f.close
-        elif Msg3 in str(div):
-            with open(r'Status.csv', 'a') as f:
-                writer = csv.writer(f,lineterminator = '\n')
-                row =[ID,Msg3,"BLUE"]
-                writer.writerow(row)
-                f.close
-        elif Msg4 in str(div):
-            with open(r'Status.csv', 'a') as f:
-                writer = csv.writer(f,lineterminator = '\n')
-                row =[ID,Msg4,"ORANGE"]
-                writer.writerow(row)
-                f.close
-        else:
-            with open(r'Status.csv', 'a') as f:
-                writer = csv.writer(f,lineterminator = '\n')
-                row =[ID,"Not Approved"]
-                writer.writerow(row)
-                f.close
         if (str(div)).count(Msg2)>1:
             if Msg3 in str(div) or Msg4 in str(div):
-                with open(r'Status.csv', 'a') as f:
-                    writer = csv.writer(f,lineterminator = '\n')
-                    row =[ID,"One Test Not Approved"]
-                    writer.writerow(row)
-                    f.close
+                if (str(div).count(Msg3) > 1) or (str(div).count(Msg4) > 1):
+                    with open(r'Status.csv', 'a') as f:
+                        writer = csv.writer(f,lineterminator = '\n')
+                        row =[ID,"Both Tests Not Approved"]
+                        writer.writerow(row)
+                        f.close
+                else:
+                    status2 = soup.find_all("div", class_="row no-gutters bg-light cbColumns sectiontableentry1 cbUserListRow")
+                    if "cbUserListFieldLine cbUserListFL_cb_mammogramindicator" in str(status2):
+                        if Msg in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,"PKESOM",Msg,"GREEN"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg3 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,"PKESOM",Msg3,"BLUE"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg4 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,"PKESOM",Msg4,"ORANGE"]
+                                writer.writerow(row)
+                                f.close
+                    else:
+                        if Msg in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,Msg,"GREEN"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg3 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,Msg3,"BLUE"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg4 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,Msg4,"ORANGE"]
+                                writer.writerow(row)
+                                f.close
+                    status2 = soup.find("div", class_="row no-gutters bg-light cbColumns sectiontableentry2 cbUserListRow")
+                    if "cbUserListFieldLine cbUserListFL_cb_mammogramindicator" in str(status2):
+                        if Msg in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,"PKESOM",Msg,"GREEN"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg3 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,"PKESOM",Msg3,"BLUE"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg4 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,"PKESOM",Msg4,"ORANGE"]
+                                writer.writerow(row)
+                                f.close
+                    else:
+                        if Msg in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,Msg,"GREEN"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg3 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,Msg3,"BLUE"]
+                                writer.writerow(row)
+                                f.close
+                        elif Msg4 in str(status2):
+                            with open(r'Status.csv', 'a') as f:
+                                writer = csv.writer(f,lineterminator = '\n')
+                                row =[ID,Msg4,"ORANGE"]
+                                writer.writerow(row)
+                                f.close
             else:
                 with open(r'Status.csv', 'a') as f:
                     writer = csv.writer(f,lineterminator = '\n')
                     row =[ID,"Both Tests Approved"]
                     writer.writerow(row)
-                    f.close       
+                    f.close
+        else:
+            if Msg in str(div):
+                with open(r'Status.csv', 'a') as f:
+                    writer = csv.writer(f,lineterminator = '\n')
+                    row =[ID,Msg,"GREEN"]
+                    writer.writerow(row)
+                    f.close
+            elif Msg5 in str(div):
+                with open(r'Status.csv', 'a') as f:
+                    writer = csv.writer(f,lineterminator = '\n')
+                    row =[ID,Msg5]
+                    writer.writerow(row)
+                    f.close
+            elif Msg3 in str(div):
+                with open(r'Status.csv', 'a') as f:
+                    writer = csv.writer(f,lineterminator = '\n')
+                    row =[ID,Msg3,"BLUE"]
+                    writer.writerow(row)
+                    f.close
+            elif Msg4 in str(div):
+                with open(r'Status.csv', 'a') as f:
+                    writer = csv.writer(f,lineterminator = '\n')
+                    row =[ID,Msg4,"ORANGE"]
+                    writer.writerow(row)
+                    f.close
+               
     driver.close()
     driver.quit()
+
 UnfID = []
 IDlist = []
 df = pd.read_csv("ICs.csv")
