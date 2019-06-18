@@ -7,7 +7,7 @@ import random
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import csv
-
+import numpy as np
 
 
 def login(IDlist):
@@ -34,7 +34,17 @@ def login(IDlist):
         print((str(div)).count(Msg2))
         if (str(div)).count(Msg2)>1:
             if Msg3 in str(div) or Msg4 in str(div):
-                if (str(div).count(Msg3) > 1) or (str(div).count(Msg4) > 1):
+                if (str(div).count(Msg3) > 1):
+                    Status.append("BLUE"+ ID)
+                    Mammogram.append("BLUE"+ ID)
+                    with open(r'Status.csv', 'a') as f:
+                        writer = csv.writer(f,lineterminator = '\n')
+                        row =[ID,"Both Tests Not Approved"]
+                        writer.writerow(row)
+                        f.close
+                elif (str(div).count(Msg4) > 1):
+                    Status.append("ORANGE"+ ID)
+                    Mammogram.append("ORANGE"+ ID)
                     with open(r'Status.csv', 'a') as f:
                         writer = csv.writer(f,lineterminator = '\n')
                         row =[ID,"Both Tests Not Approved"]
@@ -42,84 +52,118 @@ def login(IDlist):
                         f.close
                 else:
                     status2 = soup.find_all("div", class_="row no-gutters bg-light cbColumns sectiontableentry1 cbUserListRow")
+                    patDesc = ""
+                    patColor = ""
+                    statusColor = ""
+                    mammogramColor = ""
+                    isStatus = False
+                    isMammogram = False
                     if "cbUserListFieldLine cbUserListFL_cb_mammogramindicator" in str(status2):
                         if Msg in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,"PKESOM",Msg,"GREEN"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("BLUE")
+                            #Mammogram.append("GREEN")
+                            patDesc = "PSEKOM"
+                            patColor = "GREEN"
+                            mammogramColor = "GREEN"
+                            isMammogram = True
                         elif Msg3 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,"PKESOM",Msg3,"BLUE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("BLUE")
+                            #Mammogram.append("BLUE")
+                            patDesc = "PSEKOM"
+                            patColor = "BLUE"
+                            mammogramColor = "BLUE"
+                            isMammogram = True
                         elif Msg4 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,"PKESOM",Msg4,"ORANGE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("ORANGE")
+                            #Mammogram.append("ORANGE")
+                            patDesc = "PSEKOM"
+                            patColor = "ORANGE"
+                            mammogramColor = "ORANGE"
+                            isMammogram = True
                     else:
                         if Msg in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,Msg,"GREEN"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("GREEN")
+                            #Mammogram.append("N\A")
+                            patDesc = "N\A"
+                            patColor = "GREEN"
+                            statusColor = "GREEN"
+                            isStatus = True
                         elif Msg3 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,Msg3,"BLUE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("BLUE")
+                            #Mammogram.append("N\A")
+                            patDesc = "N\A"
+                            patColor = "BLUE"
+                            statusColor = "BLUE"
+                            isStatus = True
                         elif Msg4 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,Msg4,"ORANGE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("ORANGE")
+                            #Mammogram.append("N\A")
+                            patDesc = "N\A"
+                            patColor = "ORANGE"
+                            statusColor = "ORANGE"
+                            isStatus = True
                     status2 = soup.find("div", class_="row no-gutters bg-light cbColumns sectiontableentry2 cbUserListRow")
                     if "cbUserListFieldLine cbUserListFL_cb_mammogramindicator" in str(status2):
                         if Msg in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,"PKESOM",Msg,"GREEN"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("GREEN")
+                            #Mammogram.append("GREEN")
+                            patDesc = patDesc + "^PSEKOM"
+                            patColor = patColor + "GREEN"
+                            mammogramColor = "GREEN"
+                            isMammogram = True
                         elif Msg3 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,"PKESOM",Msg3,"BLUE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("BLUE")
+                            #Mammogram.append("BLUE")
+                            patDesc = patDesc + "^PSEKOM"
+                            patColor = patColor + "BLUE"
+                            mammogramColor = "BLUE"
+                            isMammogram = True
                         elif Msg4 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,"PKESOM",Msg4,"ORANGE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("ORANGE")
+                            #Mammogram.append("ORANGE")
+                            patDesc = patDesc + "^PSEKOM"
+                            patColor = patColor + "ORANGE"
+                            mammogramColor = "ORANGE"
+                            isMammogram = True
                     else:
                         if Msg in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,Msg,"GREEN"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("GREEN")
+                            #Mammogram.append("N\A")
+                            patDesc = patDesc + "^N\A"
+                            patColor = patColor + "GREEN"
+                            statusColor = "GREEN"
+                            isStatus = True
                         elif Msg3 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,Msg3,"BLUE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("BLUE")
+                            #Mammogram.append("N\A")
+                            patDesc = patDesc + "^N\A"
+                            patColor = patColor + "BLUE"
+                            statusColor = "BLUE"
+                            isStatus = True
                         elif Msg4 in str(status2):
-                            with open(r'Status.csv', 'a') as f:
-                                writer = csv.writer(f,lineterminator = '\n')
-                                row =[ID,Msg4,"ORANGE"]
-                                writer.writerow(row)
-                                f.close
+                            #Status.append("ORANGE")
+                            #Mammogram.append("N\A")
+                            patDesc = patDesc + "^N\A"
+                            patColor = patColor + "ORANGE"
+                            statusColor = "ORANGE"
+                            isStatus = True
+                    with open(r'Status.csv', 'a') as f:
+                        writer = csv.writer(f,lineterminator = '\n')
+                        row =[ID,patDesc,patColor]
+                        writer.writerow(row)
+                        f.close
+                    if isStatus == True and isMammogram == False:
+                        Status.append(statusColor)
+                        Mammogram.append("N\A")
+                    elif isStatus == False and isMammogram == True:
+                        Status.append("N\A")
+                        Mammogram.append(mammogramColor)
+                    else:
+                        Status.append(statusColor)
+                        Mammogram.append(mammogramColor)
             else:
+                Status.append("GREEN")
+                Mammogram.append("GREEN")
                 with open(r'Status.csv', 'a') as f:
                     writer = csv.writer(f,lineterminator = '\n')
                     row =[ID,"Both Tests Approved"]
@@ -127,43 +171,63 @@ def login(IDlist):
                     f.close
         else:
             if Msg in str(div):
+                Status.append("GREEN")
+                Mammogram.append("N\A")
                 with open(r'Status.csv', 'a') as f:
                     writer = csv.writer(f,lineterminator = '\n')
                     row =[ID,Msg,"GREEN"]
                     writer.writerow(row)
                     f.close
+                    print(Status)
             elif Msg5 in str(div):
+                Status.append("Not Found")
+                Mammogram.append("Not Found")
                 with open(r'Status.csv', 'a') as f:
                     writer = csv.writer(f,lineterminator = '\n')
                     row =[ID,Msg5]
                     writer.writerow(row)
                     f.close
             elif Msg3 in str(div):
+                Status.append("BLUE")
+                Mammogram.append("N\A")
                 with open(r'Status.csv', 'a') as f:
                     writer = csv.writer(f,lineterminator = '\n')
                     row =[ID,Msg3,"BLUE"]
                     writer.writerow(row)
                     f.close
             elif Msg4 in str(div):
+                Status.append("ORANGE")
+                Mammogram.append("N\A")
                 with open(r'Status.csv', 'a') as f:
                     writer = csv.writer(f,lineterminator = '\n')
                     row =[ID,Msg4,"ORANGE"]
                     writer.writerow(row)
                     f.close
-               
+                
     driver.close()
     driver.quit()
+    return Status,Mammogram
 
+
+Branch = input("Please Enter Your Branch Name:\n")
+DFx = pd.read_csv("Perkeso2016.csv")
+ExtDF = DFx[DFx['branch']==Branch]
+ExtDF.to_csv(Branch + ".csv")
 UnfID = []
 IDlist = []
-df = pd.read_csv("ICs.csv")
+Status= []
+Mammogram= []
+df = pd.read_csv(Branch + ".csv")
 for idx in range(0,len(df.index)):         
     row = df.iloc[idx]
-    UnfID.append(row['IDs'])
+    UnfID.append(row['ic_no'])
 for IDx in UnfID:
     IDlist.append(''.join(e for e in IDx if e.isalnum()))
 login(IDlist)
-    
+df["Tests"] = pd.Series(Status)
+df["Mammogram"] = pd.Series(Mammogram)
+df.to_csv(Branch + "Stat.csv")
+
 #def webcrawler():                  
     # autologin = {
     #      "username": "BPDCKLANG",
