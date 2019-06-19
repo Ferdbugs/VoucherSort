@@ -254,7 +254,6 @@ def login_dets(e2,e3):
   
 def command():
     root2 = Tk()
-    window=replace_window(root2)
     root2.geometry("300x150")
     root2.title("VoucherSort")
     root2.resizable(False, False)
@@ -277,7 +276,7 @@ def command():
     e3.grid(row=2,padx=(130,0))
 
     Button(root2,text="Generate", width=10, command = lambda: login_dets(e2,e3)).grid(row=5,column=0,sticky=W,padx = (50,0), pady=15)
-    Button(root2,text="Close", width=10, command = (root2.destroy).grid(row=5,sticky=W,padx=(170,0)))
+    Button(root2,text="Close", width=10, command = root2.destroy).grid(row=5,sticky=W,padx=(170,0))
     mainloop()
     
 
