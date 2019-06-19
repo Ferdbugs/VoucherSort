@@ -219,7 +219,8 @@ Mammogram= []
 
 root = Tk()
 root.geometry("300x130")
-root.title("Perkeso")
+root.title("VoucherSort")
+root.resizable(False, False)
 
 windowWidth = root.winfo_reqwidth()
 windowHeight = root.winfo_reqheight()
@@ -228,11 +229,13 @@ positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
 root.geometry("+{}+{}".format(positionRight, positionDown))
 
 
-Label(root, text="Branch").grid(row=0, padx=(10,95), pady=35)
+Label(root, text="Outlet Name").grid(row=0, column =0, padx= (0,100) ,pady=35)
+
 
 e1=Entry(root)
 
-e1.grid(row=0,padx=(90,0),column =0)
+e1.grid(row=0, padx = (130,0))
+
     
 def login_dets(e2,e3):
     df = pd.read_csv(Branch + ".csv")
@@ -251,19 +254,30 @@ def login_dets(e2,e3):
   
 def command():
     root2 = Tk()
-    Label(root2, text="Outlet Username").grid(row=1)
-    Label(root2, text="Outlet Password").grid(row=2)
+    window=replace_window(root2)
+    root2.geometry("300x150")
+    root2.title("VoucherSort")
+    root2.resizable(False, False)
+    
+    windowWidth = root2.winfo_reqwidth()
+    windowHeight = root2.winfo_reqheight()
+    positionRight = int(root2.winfo_screenwidth()/2 - windowWidth/2)
+    positionDown = int(root2.winfo_screenheight()/2 - windowHeight/2)
+    root2.geometry("+{}+{}".format(positionRight, positionDown))
+    
+    Label(root2, text="Outlet Username").grid(row=1, padx = (0,100), pady=15)
+    Label(root2, text="Outlet Password").grid(row=2, padx = (0,100), pady=5)
 
 
     e2=Entry(root2)
     e3=Entry(root2)
 
 
-    e2.grid(row=1,column=1)
-    e3.grid(row=2,column=1)
+    e2.grid(row=1,padx=(130,0))
+    e3.grid(row=2,padx=(130,0))
 
-    Button(root2,text="Generate", command = lambda: login_dets(e2,e3)).grid(row=3,column=0,sticky=W,pady=1)
-    Button(root2,text="Close", command = root2.destroy).grid(row=3,column=0, sticky=W, pady=1,padx=(40,80))
+    Button(root2,text="Generate", width=10, command = lambda: login_dets(e2,e3)).grid(row=5,column=0,sticky=W,padx = (50,0), pady=15)
+    Button(root2,text="Close", width=10, command = (root2.destroy).grid(row=5,sticky=W,padx=(170,0)))
     mainloop()
     
 
@@ -276,8 +290,8 @@ def outlet_name(e1):
     ExtDF.to_csv(Branch + ".csv")
 
 def branch_get():
-    Button(root,text="Confirm", width=10, command = lambda: outlet_name(e1)).grid(sticky=W, padx=50)
-    Button(root,text="Next", width=10, command = lambda: command()).grid(row=1,column=1,sticky=W, pady=1)
+    Button(root,text="Confirm", width=10, command = lambda: outlet_name(e1)).grid(sticky=W, padx=(50,0))
+    Button(root,text="Next", width=10, command = lambda: command()).grid(row =1,sticky=W, padx=(170,0))
     mainloop()
 
 branch_get()
