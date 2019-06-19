@@ -8,9 +8,10 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import csv
 import numpy as np
+from tkinter import *
 
 
-def login(IDlist):
+def login(IDlist,user,pword):
     Msg = "Approved"
     Msg2 = "Mammogram"
     Msg3 = "You have yet to certify that the report is completed,"
@@ -18,8 +19,8 @@ def login(IDlist):
     Msg5 = "No users in this list"
     driver = webdriver.Chrome()
     driver.get ("https://sehat.perkeso.gov.my/v2/")
-    driver.find_element_by_id("modlgn-username").send_keys("DCSJ")
-    driver.find_element_by_id ("modlgn-passwd").send_keys("BPDCSUBANGJAYA")
+    driver.find_element_by_id("modlgn-username").send_keys(user)
+    driver.find_element_by_id ("modlgn-passwd").send_keys(pword)
     driver.find_element_by_name("Submit").click()
     driver.find_element_by_class_name("item-711").click()
     driver.find_element_by_xpath("//*[@id='content']/div[2]/div[2]/table/tbody/tr[2]/td[5]/a").click()
@@ -35,16 +36,16 @@ def login(IDlist):
         if (str(div)).count(Msg2)>1:
             if Msg3 in str(div) or Msg4 in str(div):
                 if (str(div).count(Msg3) > 1):
-                    Status.append("BLUE"+ ID)
-                    Mammogram.append("BLUE"+ ID)
+                    Status.append("BLUE")
+                    Mammogram.append("BLUE")
                     with open(r'Status.csv', 'a') as f:
                         writer = csv.writer(f,lineterminator = '\n')
                         row =[ID,"Both Tests Not Approved"]
                         writer.writerow(row)
                         f.close
                 elif (str(div).count(Msg4) > 1):
-                    Status.append("ORANGE"+ ID)
-                    Mammogram.append("ORANGE"+ ID)
+                    Status.append("ORANGE")
+                    Mammogram.append("ORANGE")
                     with open(r'Status.csv', 'a') as f:
                         writer = csv.writer(f,lineterminator = '\n')
                         row =[ID,"Both Tests Not Approved"]
@@ -203,58 +204,85 @@ def login(IDlist):
                     row =[ID,Msg4,"ORANGE"]
                     writer.writerow(row)
                     f.close
-                
+
     driver.close()
     driver.quit()
     return Status,Mammogram
-
-
-Branch = input("Please Enter Your Branch Name:\n")
-DFx = pd.read_csv("Perkeso2016.csv")
-ExtDF = DFx[DFx['branch']==Branch]
-ExtDF.to_csv(Branch + ".csv")
+    
+user = ''
+pword= ''
 UnfID = []
 IDlist = []
 Status= []
 Mammogram= []
-df = pd.read_csv(Branch + ".csv")
-for idx in range(0,len(df.index)):         
-    row = df.iloc[idx]
-    UnfID.append(row['ic_no'])
-for IDx in UnfID:
-    IDlist.append(''.join(e for e in IDx if e.isalnum()))
-login(IDlist)
-df["Tests"] = pd.Series(Status)
-df["Mammogram"] = pd.Series(Mammogram)
-df.to_csv(Branch + "Stat.csv")
 
-#def webcrawler():                  
-    # autologin = {
-    #      "username": "BPDCKLANG",
-    #      "passwd": "BPDCKLANG1",
-    #      "csrfmiddlewaretoken": "08b7407193dd9bff2c7d4f7850c6338a"
-    #     }
-    # session_requests = requests.session()
-    # login_url = "https://sehat.perkeso.gov.my/v2/"
-    # result = session_requests.get(login_url)
-    # tree = html.fromstring(result.text)
-    # authenticity_token = list(set(tree.xpath("//input[@name='csrfmiddlewaretoken']/@value")))[0]
-    # result = session_requests.post(
-    # login_url, 
-    # data = autologin, 
-    # headers = dict(referer=login_url)
-    # )
 
-    # for limit in range(0,120):
-    #     url = "https://sehat.perkeso.gov.my/v2/list-all-patients.html?limitstart=" + str(limit)  
-    #     time.sleep(random.randint(2,5))
-    #     page = requests.get(url)                     
-    #     soup = BeautifulSoup(page.text,"html.parser")
-    #     tables = soup.findAll("table", class_='row no-gutters bg-light cbColumns sectiontableentry1 cbUserListRow')
-    #     table=soup.prettify("utf-8")
-    #     f= open("Parkeso.txt","a")
-    #     f.write(table.decode('utf-8') + "\n\n\n\n")
-    #     f.write(str(limit))
-    #     f.close
-    #     limit = limit+30    
-#webcrawler()
+root = Tk()
+root.geometry("300x130")
+root.title("Perkeso")
+
+windowWidth = root.winfo_reqwidth()
+windowHeight = root.winfo_reqheight()
+positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)
+positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
+root.geometry("+{}+{}".format(positionRight, positionDown))
+
+
+Label(root, text="Branch").grid(row=0, padx=(10,95), pady=35)
+
+e1=Entry(root)
+
+e1.grid(row=0,padx=(90,0),column =0)
+    
+def login_dets(e2,e3):
+    df = pd.read_csv(Branch + ".csv")
+    for idx in range(0,len(df.index)):         
+        row = df.iloc[idx]
+        UnfID.append(row['ic_no'])
+    for IDx in UnfID:
+        IDlist.append(''.join(e for e in IDx if e.isalnum()))
+    user = e2.get()
+    pword = e3.get()
+    login(IDlist,user,pword)
+    df["Tests"] = pd.Series(Status)
+    df["Mammogram"] = pd.Series(Mammogram)
+    df.to_csv(Branch + "Stat.csv")
+
+  
+def command():
+    root2 = Tk()
+    Label(root2, text="Outlet Username").grid(row=1)
+    Label(root2, text="Outlet Password").grid(row=2)
+
+
+    e2=Entry(root2)
+    e3=Entry(root2)
+
+
+    e2.grid(row=1,column=1)
+    e3.grid(row=2,column=1)
+
+    Button(root2,text="Generate", command = lambda: login_dets(e2,e3)).grid(row=3,column=0,sticky=W,pady=1)
+    Button(root2,text="Close", command = root2.destroy).grid(row=3,column=0, sticky=W, pady=1,padx=(40,80))
+    mainloop()
+    
+
+
+def outlet_name(e1):
+    global Branch
+    Branch = e1.get()
+    DFx = pd.read_csv("Perkeso2016.csv")
+    ExtDF = DFx[DFx['branch']== Branch]
+    ExtDF.to_csv(Branch + ".csv")
+
+def branch_get():
+    Button(root,text="Confirm", width=10, command = lambda: outlet_name(e1)).grid(sticky=W, padx=50)
+    Button(root,text="Next", width=10, command = lambda: command()).grid(row=1,column=1,sticky=W, pady=1)
+    mainloop()
+
+branch_get()
+
+def show_entry_fields():
+    print("Username: %s\nPassword: %s" % (e1.get(), e2.get()))
+
+
