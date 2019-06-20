@@ -254,7 +254,7 @@ def login_dets(e3,e4):
     login(IDlist,user,pword)
     df["Tests"] = pd.Series(Status)
     df["Mammogram"] = pd.Series(Mammogram)
-    df.to_csv(Branch + "Stat.csv")
+    df.to_excel(Branch + ".xlsx")
 
   
 def command():
