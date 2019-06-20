@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 import csv
 import numpy as np
 from tkinter import *
+from tkinter import messagebox
 
 
 def login(IDlist,user,pword):
@@ -215,7 +216,7 @@ UnfID = []
 IDlist = []
 Status= []
 Mammogram= []
-
+flag = 0
 
 
 root = Tk()
@@ -251,10 +252,13 @@ def login_dets(e3,e4):
         IDlist.append(''.join(e for e in IDx if e.isalnum()))
     user = e3.get()
     pword = e4.get()
-    login(IDlist,user,pword)
-    df["Tests"] = pd.Series(Status)
-    df["Mammogram"] = pd.Series(Mammogram)
-    df.to_excel(Branch + ".xlsx")
+    if user=='' or pword=='':
+        messagebox.showerror('Error', 'Please fill in both Username and Password')
+    else:
+        login(IDlist,user,pword)
+        df["Tests"] = pd.Series(Status)
+        df["Mammogram"] = pd.Series(Mammogram)
+        df.to_excel(Branch + ".xlsx")
 
   
 def command():
@@ -276,7 +280,6 @@ def command():
     e3=Entry(root2)
     e4=Entry(root2)
 
-
     e3.grid(row=1,padx=(130,0))
     e4.grid(row=2,padx=(130,0))
 
@@ -289,16 +292,36 @@ def command():
 def outletFile_name(e1,e2):
     global Branch
     global File
+    global flag
     Branch = e1.get()
     File = e2.get()
-    DFx = pd.read_csv(File + ".csv")
-    ExtDF = DFx[DFx['branch']== Branch]
-    ExtDF.to_csv(Branch + ".csv")
+    FileFlag=0
+    if Branch=='' or File=='':
+        messagebox.showerror('Error', 'Please fill in both Branch name and File name')
+    else:
+        try:
+            DFx = pd.read_csv(File + ".csv")
+            FileFlag=1
+        except:
+            messagebox.showerror('Error', File + ' Not Found !!')
+            branch_get()
+        if FileFlag==1:
+            ExtDF = DFx[DFx['branch']== Branch]
+            ExtDF.to_csv(Branch + ".csv")
+            flag = 1
+            next()
+        else:
+            branch_get()
 
 def branch_get():
     Button(root,text="Confirm", width=10, command = lambda: outletFile_name(e1,e2)).grid(row=5,column=0,sticky=W,padx = (50,0), pady=15)
-    Button(root,text="Next", width=10, command = lambda: command()).grid(row=5,sticky=W,padx=(170,0))
     mainloop()
+
+def next():
+    print(flag)
+    if (flag==1):
+        Button(root,text="Next", width=10, command = lambda: command()).grid(row=5,sticky=W,padx=(170,0))
+        mainloop()
 
 
 branch_get()
