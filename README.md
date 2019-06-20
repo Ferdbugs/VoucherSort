@@ -23,6 +23,9 @@ Perkeso2016.csv
 Perkeso file to be used with VoucherSort should always be
 downloaded in ".csv" format.
 ```
+```bash
+ChromeDriver MUST be installed and added to path in order to run the application. Suitably Chromedriver 75.
+```
 
 ## TEAM
 
