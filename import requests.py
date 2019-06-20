@@ -217,8 +217,9 @@ Status= []
 Mammogram= []
 
 
+
 root = Tk()
-root.geometry("300x130")
+root.geometry("300x150")
 root.title("VoucherSort")
 root.resizable(False, False)
 
@@ -229,23 +230,27 @@ positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
 root.geometry("+{}+{}".format(positionRight, positionDown))
 
 
-Label(root, text="Outlet Name").grid(row=0, column =0, padx= (0,100) ,pady=35)
+Label(root, text="Outlet Name").grid(row=1, padx = (0,100), pady=15)
+Label(root, text="File Name").grid(row=2, padx = (0,100), pady=5)
 
 
 e1=Entry(root)
+e2=Entry(root)
 
-e1.grid(row=0, padx = (130,0))
+e1.grid(row=1,padx=(130,0))
+e2.grid(row=2,padx=(130,0))
+
 
     
-def login_dets(e2,e3):
+def login_dets(e3,e4):
     df = pd.read_csv(Branch + ".csv")
     for idx in range(0,len(df.index)):         
         row = df.iloc[idx]
         UnfID.append(row['ic_no'])
     for IDx in UnfID:
         IDlist.append(''.join(e for e in IDx if e.isalnum()))
-    user = e2.get()
-    pword = e3.get()
+    user = e3.get()
+    pword = e4.get()
     login(IDlist,user,pword)
     df["Tests"] = pd.Series(Status)
     df["Mammogram"] = pd.Series(Mammogram)
@@ -268,30 +273,33 @@ def command():
     Label(root2, text="Outlet Password").grid(row=2, padx = (0,100), pady=5)
 
 
-    e2=Entry(root2)
     e3=Entry(root2)
+    e4=Entry(root2)
 
 
-    e2.grid(row=1,padx=(130,0))
-    e3.grid(row=2,padx=(130,0))
+    e3.grid(row=1,padx=(130,0))
+    e4.grid(row=2,padx=(130,0))
 
-    Button(root2,text="Generate", width=10, command = lambda: login_dets(e2,e3)).grid(row=5,column=0,sticky=W,padx = (50,0), pady=15)
+    Button(root2,text="Generate", width=10, command = lambda: login_dets(e3,e4)).grid(row=5,column=0,sticky=W,padx = (50,0), pady=15)
     Button(root2,text="Close", width=10, command = root2.destroy).grid(row=5,sticky=W,padx=(170,0))
     mainloop()
     
 
 
-def outlet_name(e1):
+def outletFile_name(e1,e2):
     global Branch
+    global File
     Branch = e1.get()
-    DFx = pd.read_csv("Perkeso2016.csv")
+    File = e2.get()
+    DFx = pd.read_csv(File + ".csv")
     ExtDF = DFx[DFx['branch']== Branch]
     ExtDF.to_csv(Branch + ".csv")
 
 def branch_get():
-    Button(root,text="Confirm", width=10, command = lambda: outlet_name(e1)).grid(sticky=W, padx=(50,0))
-    Button(root,text="Next", width=10, command = lambda: command()).grid(row =1,sticky=W, padx=(170,0))
+    Button(root,text="Confirm", width=10, command = lambda: outletFile_name(e1,e2)).grid(row=5,column=0,sticky=W,padx = (50,0), pady=15)
+    Button(root,text="Next", width=10, command = lambda: command()).grid(row=5,sticky=W,padx=(170,0))
     mainloop()
+
 
 branch_get()
 
