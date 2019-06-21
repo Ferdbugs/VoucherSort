@@ -452,28 +452,28 @@ def highlight(Branch):
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOORANGE"',
-                                  "format": Approved
+                                  "format": Processing
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOPORANGE"',
-                                  "format": Approved
+                                  "format": Processing
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOCORANGE"',
-                                  "format": Approved
+                                  "format": Processing
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOEORANGE"',
-                                  "format": Approved
+                                  "format": Processing
                                  }
     )
 
@@ -481,27 +481,27 @@ def highlight(Branch):
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOBLUE"',
-                                  "format": Approved
+                                  "format": yetToCertify
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOPBLUE"',
-                                  "format": Approved
+                                  "format": yetToCertify
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOCBLUE"',
-                                  "format": Approved
+                                  "format": yetToCertify
                                  }
     )
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
                                   "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOEBLUE"',
-                                  "format": Approved
+                                  "format": yetToCertify
                                  }
     )
 
