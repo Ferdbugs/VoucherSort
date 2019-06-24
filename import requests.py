@@ -263,6 +263,7 @@ def login_dets(e3,e4):
         df["Tests"] = pd.Series(Status)
         df["Mammogram"] = pd.Series(Mammogram)
         df.to_excel(Branch + ".xlsx")
+        highlight(Branch)
 
 def destroy_windows():
     root.destroy()
@@ -330,8 +331,6 @@ def next():
         mainloop()
 
 
-branch_get()
-
 def show_entry_fields():
     print("Username: %s\nPassword: %s" % (e1.get(), e2.get()))
 
@@ -340,7 +339,7 @@ def highlight(Branch):
 
     numberOfRows = len(df.index) + 1
 
-    writer = pd.ExcelWriter(Branch + '.xlsx', engine = 'xlsxwriter')
+    writer = pd.ExcelWriter(Branch + 'Colored.xlsx', engine = 'xlsxwriter')
 
     df.to_excel(writer, sheet_name = 'Sheet1', index = False)
 
@@ -518,5 +517,5 @@ def highlight(Branch):
 
     workbook.close()
 
-highlight(Branch)
 
+branch_get()
