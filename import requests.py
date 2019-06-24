@@ -329,7 +329,7 @@ def next():
     if (flag==1):
         Button(root,text="Next", width=10, command = lambda: command()).grid(row=5,sticky=W,padx=(170,0))
         mainloop()
-
+        
 def show_entry_fields():
     print("Username: %s\nPassword: %s" % (e1.get(), e2.get()))
 
@@ -338,7 +338,7 @@ def highlight(Branch):
 
     numberOfRows = len(df.index) + 1
 
-    writer = pd.ExcelWriter(Branch + '.xlsx', engine = 'xlsxwriter')
+    writer = pd.ExcelWriter(Branch + 'Colored.xlsx', engine = 'xlsxwriter')
 
     df.to_excel(writer, sheet_name = 'Sheet1', index = False)
 
@@ -516,6 +516,7 @@ def highlight(Branch):
 
     workbook.close()
 
+
 branch_get()
 
-#highlight(Branch)
+
