@@ -244,6 +244,7 @@ e2.grid(row=2,padx=(130,0))
 
     
 def login_dets(e3,e4):
+    destroy_windows()
     df = pd.read_csv(Branch + ".csv")
     for idx in range(0,len(df.index)):         
         row = df.iloc[idx]
@@ -260,6 +261,8 @@ def login_dets(e3,e4):
         df["Mammogram"] = pd.Series(Mammogram)
         df.to_excel(Branch + ".xlsx")
 
+def destroy_windows():
+    root.destroy()
   
 def command():
     root2 = Tk()
