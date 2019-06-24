@@ -263,6 +263,7 @@ def login_dets(e3,e4):
         df["Tests"] = pd.Series(Status)
         df["Mammogram"] = pd.Series(Mammogram)
         df.to_excel(Branch + ".xlsx")
+        highlight(Branch)
 
 def destroy_windows():
     root.destroy()
@@ -328,9 +329,6 @@ def next():
     if (flag==1):
         Button(root,text="Next", width=10, command = lambda: command()).grid(row=5,sticky=W,padx=(170,0))
         mainloop()
-
-
-branch_get()
 
 def show_entry_fields():
     print("Username: %s\nPassword: %s" % (e1.get(), e2.get()))
@@ -518,4 +516,6 @@ def highlight(Branch):
 
     workbook.close()
 
-highlight(Branch)
+branch_get()
+
+#highlight(Branch)
