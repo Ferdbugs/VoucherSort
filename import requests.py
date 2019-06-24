@@ -10,7 +10,10 @@ import csv
 import numpy as np
 from tkinter import *
 from tkinter import messagebox
-
+from pandas.io.excel import ExcelWriter
+import os
+import glob
+from xlsxwriter.workbook import Workbook
 
 def login(IDlist,user,pword):
     Msg = "Approved"
@@ -332,4 +335,188 @@ branch_get()
 def show_entry_fields():
     print("Username: %s\nPassword: %s" % (e1.get(), e2.get()))
 
+def highlight(Branch):
+    df = pd.read_excel(Branch + '.xlsx' , sheet_name = 'Sheet1')
+
+    numberOfRows = len(df.index) + 1
+
+    writer = pd.ExcelWriter(Branch + '.xlsx', engine = 'xlsxwriter')
+
+    df.to_excel(writer, sheet_name = 'Sheet1', index = False)
+
+    workbook  = writer.book
+    worksheet = writer.sheets['Sheet1']
+    worksheet2 = workbook.add_worksheet('Sheet2')
+
+    CT = workbook.add_format({'bg_color': '#FF0000'})
+    Approved = workbook.add_format({'bg_color': '#00FF11'})
+    Processing = workbook.add_format({'bg_color': '#FF9100'})
+    yetToCertify = workbook.add_format({'bg_color': '#00F7FF'})
+    notFound = workbook.add_format({'bg_color': '#D1CACA'})
+    bold = workbook.add_format({'bold': True})
+
+    worksheet2.write('B2', 'Legend', bold)
+    worksheet2.write('B3', 'Colour', bold)
+    worksheet2.write('C3', 'Rule', bold)
+    worksheet2.write('B4', 'GREEN', Approved)
+    worksheet2.write('C4', "Uploaded and Approved in PERKESO portal")
+    worksheet2.write('B5', 'ORANGE', Processing)
+    worksheet2.write('C5', "Uploaded and Processing in PERKESO portal")
+    worksheet2.write('B6', 'BLUE', yetToCertify)
+    worksheet2.write('C6', "Yet to certify test/voucher not confirmed")
+    worksheet2.write('B7', 'RED', CT)
+    worksheet2.write('C7', "Cancelled Test")
+    worksheet2.write('B8', 'GREY', notFound)
+    worksheet2.write('C8', "User not found in database")
+    worksheet2.write('B9', 'Not Coloured')
+    worksheet2.write('C9', "Not enough information to categorise.\nCheck manually")
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())="CT"',
+                                  "format": CT
+                                 }
+    )
+
+    #MAMMOGRAM CONDITIONALS WITH PRICE
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("W"&ROW())&INDIRECT("AH"&ROW())="110BLUE"',
+                                  "format": yetToCertify
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("W"&ROW())&INDIRECT("AH"&ROW())="110GREEN"',
+                                  "format": Approved
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("W"&ROW())&INDIRECT("AH"&ROW())="110ORANGE"',
+                                  "format": Processing
+                                 }
+    )
+
+    #MAMMOGRAM CONDITIONALS WITH REFERENCE
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AH"&ROW())="PKESOMBLUE"',
+                                  "format": yetToCertify
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AH"&ROW())="PKESOMGREEN"',
+                                  "format": Approved
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AH"&ROW())="PKESOMORANGE"',
+                                  "format": Processing
+                                 }
+    )
+
+    #NORMAL WITH REFERENCE GREEN
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOGREEN"',
+                                  "format": Approved
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOPGREEN"',
+                                  "format": Approved
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOCGREEN"',
+                                  "format": Approved
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOEGREEN"',
+                                  "format": Approved
+                                 }
+    )
+
+    #NORMAL WITH REFERENCE ORANGE
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOORANGE"',
+                                  "format": Processing
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOPORANGE"',
+                                  "format": Processing
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOCORANGE"',
+                                  "format": Processing
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOEORANGE"',
+                                  "format": Processing
+                                 }
+    )
+
+    #NORMAL WITH REFERENE BLUE
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOBLUE"',
+                                  "format": yetToCertify
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOPBLUE"',
+                                  "format": yetToCertify
+                                 }
+    )
+
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOCBLUE"',
+                                  "format": yetToCertify
+                                 }
+    )
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("T"&ROW())&INDIRECT("AG"&ROW())="PKESOEBLUE"',
+                                  "format": yetToCertify
+                                 }
+    )
+
+    #NOT APPROVED
+    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+                                 {"type": "formula",
+                                  "criteria": '=INDIRECT("AG"&ROW())="Not Found"',
+                                  "format": notFound
+                                 }
+    )
+
+    workbook.close()
+
+highlight(Branch)
 
