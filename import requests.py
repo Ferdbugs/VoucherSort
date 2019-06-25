@@ -14,6 +14,9 @@ from pandas.io.excel import ExcelWriter
 import os
 import glob
 from xlsxwriter.workbook import Workbook
+from random import randint
+from time import sleep
+import os
 
 def login(IDlist,user,pword):
     Msg = "Approved"
@@ -29,6 +32,7 @@ def login(IDlist,user,pword):
     driver.find_element_by_class_name("item-711").click()
     driver.find_element_by_xpath("//*[@id='content']/div[2]/div[2]/table/tbody/tr[2]/td[5]/a").click()
     for ID in IDlist:
+        sleep(randint(0,2))
         driver.get ("https://sehat.perkeso.gov.my/v2/component/comprofiler/userslist/9-my-patients-search-patients/search.html")
         driver.find_element_by_id("cb_ic").send_keys(ID)
         driver.find_element_by_xpath("//*[@id='adminForm']/div[3]/div[2]/div[2]/div/input").click()
@@ -338,7 +342,13 @@ def highlight(Branch):
 
     numberOfRows = len(df.index) + 1
 
-    writer = pd.ExcelWriter(Branch + 'Colored.xlsx', engine = 'xlsxwriter')
+    newpath ='C:/Users/user/Documents/Internship/2015/' + File + '/' 
+    if not os.path.exists(newpath):
+        os.makedirs(newpath)
+        
+    writer = pd.ExcelWriter( './' + File + '/' + Branch + 'Colored.xlsx', engine = 'xlsxwriter')
+
+   
 
     df.to_excel(writer, sheet_name = 'Sheet1', index = False)
 
