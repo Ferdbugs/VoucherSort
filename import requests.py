@@ -342,7 +342,8 @@ def highlight(Branch):
 
     numberOfRows = len(df.index) + 1
 
-    newpath ='C:/Users/user/Documents/Internship/2015/' + File + '/' 
+    cwd = os.getcwd()
+    newpath = cwd + '/' + File + '/' 
     if not os.path.exists(newpath):
         os.makedirs(newpath)
         
