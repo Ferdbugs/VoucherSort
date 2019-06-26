@@ -356,12 +356,16 @@ def highlight(Branch):
     workbook  = writer.book
     worksheet = writer.sheets['Sheet1']
     worksheet2 = workbook.add_worksheet('Sheet2')
+    worksheet3 = workbook.add_worksheet('Sheet3')
 
     CT = workbook.add_format({'bg_color': '#FF0000'})
     Approved = workbook.add_format({'bg_color': '#00FF11'})
     Processing = workbook.add_format({'bg_color': '#FF9100'})
     yetToCertify = workbook.add_format({'bg_color': '#00F7FF'})
     notFound = workbook.add_format({'bg_color': '#D1CACA'})
+    NOVCtestNotDone = workbook.add_format({'bg_color': '#FFFF00'})
+    NOVCtestDone = workbook.add_format({'bg_color': '#FF00FF'})
+    technicalIssue = workbook.add_format({'bg_color': '#800080'})
     bold = workbook.add_format({'bold': True})
 
     worksheet2.write('B2', 'Legend', bold)
@@ -379,6 +383,30 @@ def highlight(Branch):
     worksheet2.write('C8', "User not found in database")
     worksheet2.write('B9', 'Not Coloured')
     worksheet2.write('C9', "Not enough information to categorise.\nCheck manually")
+
+    worksheet3.write('A1', 'Outlet Name')
+    worksheet3.write('B1', 'Approved', Approved)
+    worksheet3.write('C1', 'Processing', Processing)
+    worksheet3.write('D1', 'No voucher (Test not done)', NOVCtestNotDone)
+    worksheet3.write('E1', 'No voucher (Test done)', NOVCtestDone)
+    worksheet3.write('F1', 'Cancelled', CT )
+    worksheet3.write('G1', 'Yet to certify', yetToCertify)
+    worksheet3.write('H1', 'PERKESO Technical Issue', technicalIssue)
+    worksheet3.write('I1', 'Not Uploaded', notFound)
+    worksheet3.write('J1', 'Missing Information')
+    worksheet3.write('K1', 'Outlet Total')
+    worksheet3.write('A2', Branch)
+
+    worksheet3.write_formula('B2', '=COUNTIFS(Sheet1!S:S, "PKESO", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOE", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOC", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOP", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOM", Sheet1!AG:AG, "GREEN")')
+    worksheet3.write_formula('C2', '=COUNTIFS(Sheet1!S:S, "PKESO", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOE", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOC", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOP", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOM", Sheet1!AG:AG, "ORANGE")')
+    worksheet3.write_formula('D2', '0')
+    worksheet3.write_formula('E2', '0')
+    worksheet3.write_formula('G2', '=COUNTIFS(Sheet1!S:S, "PKESO", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOE", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOC", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOP", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOM", Sheet1!AG:AG, "BLUE")')
+    worksheet3.write_formula('F2', '=COUNTIF(Sheet1!S:S, "CT")')
+    worksheet3.write_formula('H2', '0')
+    worksheet3.write_formula('I2', '=COUNTIFS(Sheet1!S:S, "<>CT", Sheet1!AF:AF, "Not Found")')
+    worksheet3.write_formula('J2', '=COUNT(Sheet1!A:A) - (B2+C2+G2+F2+I2)')
+    worksheet3.write_formula('K2', 'B2+C2+D2+E2+G2+H2+F2+I2+J2')
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
@@ -527,6 +555,20 @@ def highlight(Branch):
 
     workbook.close()
 
+#Function to append the PerkesoColored files together into one single Excel File
+#Currently not being used
+def combineWorkbooks(Branch):
+    newpath ='2015/'
+    if not os.path.exists(newpath):
+        os.makedirs(newpath)
+
+    perkeso_names = [os.path.join(newpath, 'c.xlsx'), os.path.join(newpath, Branch + 'Colored.xlsx')]
+    perkeso_files = [pd.ExcelFile(name) for name in perkeso_names]
+    print("Don't mind")
+    perkeso_frames = [x.parse(x.sheet_names[0],header = None, index_col = None) for x in perkeso_files]
+    perkeso_frames[1:] = [df[1:] for df in perkeso_frames[1:]]
+    combined = pd.concat(perkeso_frames)
+    combined.to_excel(os.path.join(newpath, 'c.xlsx'), header = False, index = False)
 
 branch_get()
 
