@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['VoucherSort.py'],
-             pathex=['C:\\Users\\ferdb\\Desktop\\D2U\\D2uNewExec'],
+             pathex=['C:\\Users\\ferdb\\Desktop\\New folder'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -29,4 +29,4 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           runtime_tmpdir=None,
-          console=False , icon='C:\\Users\\ferdb\\Desktop\\D2U\\D2uNewExec\\icon.ico')
+          console=False , icon='C:\\Users\\ferdb\\Desktop\\New folder\\icon.ico')

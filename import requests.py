@@ -266,7 +266,7 @@ def login_dets(e3,e4):
         login(IDlist,user,pword)
         df["Tests"] = pd.Series(Status)
         df["Mammogram"] = pd.Series(Mammogram)
-        df.to_excel(Branch + ".xlsx")
+        df.to_excel(Branch + ".xlsx", index = False)
         highlight(Branch)
 
 def destroy_windows():
@@ -338,7 +338,7 @@ def show_entry_fields():
     print("Username: %s\nPassword: %s" % (e1.get(), e2.get()))
 
 def highlight(Branch):
-    df = pd.read_excel(Branch + '.xlsx' , sheet_name = 'Sheet1')
+    df = pd.read_excel(Branch + '.xlsx' , sheet_name = 'Sheet1', index = False)
 
     numberOfRows = len(df.index) + 1
 
@@ -418,21 +418,21 @@ def highlight(Branch):
     #MAMMOGRAM CONDITIONALS WITH PRICE
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("V"&ROW())&INDIRECT("AG"&ROW())="110BLUE"',
+                                  "criteria": '=INDIRECT("U"&ROW())&INDIRECT("AF"&ROW())="110BLUE"',
                                   "format": yetToCertify
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("V"&ROW())&INDIRECT("AG"&ROW())="110GREEN"',
+                                  "criteria": '=INDIRECT("U"&ROW())&INDIRECT("AF"&ROW())="110GREEN"',
                                   "format": Approved
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("V"&ROW())&INDIRECT("AG"&ROW())="110ORANGE"',
+                                  "criteria": '=INDIRECT("U"&ROW())&INDIRECT("AF"&ROW())="110ORANGE"',
                                   "format": Processing
                                  }
     )
@@ -440,21 +440,21 @@ def highlight(Branch):
     #MAMMOGRAM CONDITIONALS WITH REFERENCE
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AG"&ROW())="PKESOMBLUE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AF"&ROW())="PKESOMBLUE"',
                                   "format": yetToCertify
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AG"&ROW())="PKESOMGREEN"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AF"&ROW())="PKESOMGREEN"',
                                   "format": Approved
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AG"&ROW())="PKESOMORANGE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AF"&ROW())="PKESOMORANGE"',
                                   "format": Processing
                                  }
     )
@@ -462,28 +462,28 @@ def highlight(Branch):
     #NORMAL WITH REFERENCE GREEN
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOGREEN"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOGREEN"',
                                   "format": Approved
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOPGREEN"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOPGREEN"',
                                   "format": Approved
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOCGREEN"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOCGREEN"',
                                   "format": Approved
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOEGREEN"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOEGREEN"',
                                   "format": Approved
                                  }
     )
@@ -491,28 +491,28 @@ def highlight(Branch):
     #NORMAL WITH REFERENCE ORANGE
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOORANGE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOORANGE"',
                                   "format": Processing
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOPORANGE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOPORANGE"',
                                   "format": Processing
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOCORANGE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOCORANGE"',
                                   "format": Processing
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOEORANGE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOEORANGE"',
                                   "format": Processing
                                  }
     )
@@ -520,27 +520,27 @@ def highlight(Branch):
     #NORMAL WITH REFERENE BLUE
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOBLUE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOBLUE"',
                                   "format": yetToCertify
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOPBLUE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOPBLUE"',
                                   "format": yetToCertify
                                  }
     )
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOCBLUE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOCBLUE"',
                                   "format": yetToCertify
                                  }
     )
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())&INDIRECT("AF"&ROW())="PKESOEBLUE"',
+                                  "criteria": '=INDIRECT("R"&ROW())&INDIRECT("AE"&ROW())="PKESOEBLUE"',
                                   "format": yetToCertify
                                  }
     )
@@ -548,7 +548,7 @@ def highlight(Branch):
     #NOT APPROVED
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("AF"&ROW())="Not Found"',
+                                  "criteria": '=INDIRECT("AE"&ROW())="Not Found"',
                                   "format": notFound
                                  }
     )
