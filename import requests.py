@@ -397,15 +397,15 @@ def highlight(Branch):
     worksheet3.write('K1', 'Outlet Total')
     worksheet3.write('A2', Branch)
 
-    worksheet3.write_formula('B2', '=COUNTIFS(Sheet1!S:S, "PKESO", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOE", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOC", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOP", Sheet1!AF:AF, "GREEN") + COUNTIFS(Sheet1!S:S, "PKESOM", Sheet1!AG:AG, "GREEN")')
-    worksheet3.write_formula('C2', '=COUNTIFS(Sheet1!S:S, "PKESO", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOE", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOC", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOP", Sheet1!AF:AF, "ORANGE") + COUNTIFS(Sheet1!S:S, "PKESOM", Sheet1!AG:AG, "ORANGE")')
+    worksheet3.write_formula('B2', '=COUNTIFS(Sheet1!R:R, "PKESO", Sheet1!AE:AE, "GREEN") + COUNTIFS(Sheet1!R:R, "PKESOE", Sheet1!AE:AE, "GREEN") + COUNTIFS(Sheet1!R:R, "PKESOC", Sheet1!AE:AE, "GREEN") + COUNTIFS(Sheet1!R:R, "PKESOP", Sheet1!AE:AE, "GREEN") + COUNTIFS(Sheet1!R:R, "PKESOM", Sheet1!AF:AF, "GREEN")')
+    worksheet3.write_formula('C2', '=COUNTIFS(Sheet1!R:R, "PKESO", Sheet1!AE:AE, "ORANGE") + COUNTIFS(Sheet1!R:R, "PKESOE", Sheet1!AE:AE, "ORANGE") + COUNTIFS(Sheet1!R:R, "PKESOC", Sheet1!AE:AE, "ORANGE") + COUNTIFS(Sheet1!R:R, "PKESOP", Sheet1!AE:AE, "ORANGE") + COUNTIFS(Sheet1!R:R, "PKESOM", Sheet1!AF:AF, "ORANGE")')
     worksheet3.write_formula('D2', '0')
     worksheet3.write_formula('E2', '0')
-    worksheet3.write_formula('G2', '=COUNTIFS(Sheet1!S:S, "PKESO", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOE", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOC", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOP", Sheet1!AF:AF, "BLUE") + COUNTIFS(Sheet1!S:S, "PKESOM", Sheet1!AG:AG, "BLUE")')
-    worksheet3.write_formula('F2', '=COUNTIF(Sheet1!S:S, "CT")')
+    worksheet3.write_formula('G2', '=COUNTIFS(Sheet1!R:R, "PKESO", Sheet1!AE:AE, "BLUE") + COUNTIFS(Sheet1!R:R, "PKESOE", Sheet1!AE:AE, "BLUE") + COUNTIFS(Sheet1!R:R, "PKESOC", Sheet1!AE:AE, "BLUE") + COUNTIFS(Sheet1!R:R, "PKESOP", Sheet1!AE:AE, "BLUE") + COUNTIFS(Sheet1!R:R, "PKESOM", Sheet1!AF:AF, "BLUE")')
+    worksheet3.write_formula('F2', '=COUNTIF(Sheet1!R:R, "CT")')
     worksheet3.write_formula('H2', '0')
-    worksheet3.write_formula('I2', '=COUNTIFS(Sheet1!S:S, "<>CT", Sheet1!AF:AF, "Not Found")')
-    worksheet3.write_formula('J2', '=COUNT(Sheet1!A:A) - (B2+C2+G2+F2+I2)')
+    worksheet3.write_formula('I2', '=COUNTIFS(Sheet1!R:R, "<>CT", Sheet1!AE:AE, "Not Found")')
+    worksheet3.write_formula('J2', '=COUNT(Sheet1!T:T) - (B2+C2+G2+F2+I2)')
     worksheet3.write_formula('K2', 'B2+C2+D2+E2+G2+H2+F2+I2+J2')
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
