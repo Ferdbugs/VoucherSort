@@ -410,7 +410,7 @@ def highlight(Branch):
 
     worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
                                  {"type": "formula",
-                                  "criteria": '=INDIRECT("S"&ROW())="CT"',
+                                  "criteria": '=INDIRECT("R"&ROW())="CT"',
                                   "format": CT
                                  }
     )
@@ -552,6 +552,13 @@ def highlight(Branch):
                                   "format": notFound
                                  }
     )
+
+##    worksheet.conditional_format("$A$1:$AH$%d" % (numberOfRows),
+##                                 {"type": "formula",
+##                                  "criteria": '=INDIRECT("R"&ROW())="CT"',
+##                                  "format": CT
+##                                 }
+##    )
 
     workbook.close()
 
