@@ -33,7 +33,10 @@ def login(IDlist,user,pword):
     driver.find_element_by_xpath("//*[@id='content']/div[2]/div[2]/table/tbody/tr[2]/td[5]/a").click()
     for ID in IDlist:
         sleep(randint(0,2))
-        driver.get ("https://sehat.perkeso.gov.my/v2/component/comprofiler/userslist/9-my-patients-search-patients/search.html")
+        try:
+            driver.get ("https://sehat.perkeso.gov.my/v2/component/comprofiler/userslist/9-my-patients-search-patients/search.html")
+        except TimeoutException:
+            driver.refresh()
         driver.find_element_by_id("cb_ic").send_keys(ID)
         driver.find_element_by_xpath("//*[@id='adminForm']/div[3]/div[2]/div[2]/div/input").click()
         content = driver.page_source.encode('utf-8').strip()
@@ -257,7 +260,10 @@ def login_dets(e3,e4):
         row = df.iloc[idx]
         UnfID.append(row['ic_no'])
     for IDx in UnfID:
-        IDlist.append(''.join(e for e in IDx if e.isalnum()))
+        try:
+            IDlist.append(''.join(e for e in IDx if e.isalnum()))
+        except:
+            IDlist.append('null')
     user = e3.get()
     pword = e4.get()
     if user=='' or pword=='':
